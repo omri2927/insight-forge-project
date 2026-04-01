@@ -13,6 +13,9 @@ class DocumentType(models.Model):
 
     description = models.TextField(blank=True, null=True)
 
+    def __str__(self):
+        return f"{self.name} - {self.extension if self.extension else ''}"
+
 
 class Document(models.Model):
     class UploadStatus(models.TextChoices):
@@ -38,21 +41,50 @@ class Document(models.Model):
     upload_status = models.CharField(
         max_length=25,
         choices=UploadStatus.choices,
-        default=UploadStatus.PENDING)
+        default=UploadStatus.PENDING,
+        db_index=True)
     is_active = models.BooleanField(default=True)
 
-    uploaded_at = models.DateTimeField(auto_now_add=True)
+    uploaded_at = models.DateTimeField(auto_now_add=True, db_index=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"document type: ({self.document_type}), title: {self.title if self.title else ''}"
+
+    class Meta:
+        ordering = ['-uploaded_at', '-updated_at', 'file_size']
 
 
 class DocumentProcessingResult(models.Model):
+    class ParsingStatus(models.TextChoices):
+        PENDING = 'PENDING', 'pending'
+        STARTING = 'STARTING', 'starting'
+        SUCCESS = 'SUCCESS', 'success'
+        FAILED = 'FAILED', 'failed'
+        UNSUPPORTED_FORMAT = 'UNSUPPORTED_FORMAT', 'unsupported format'
+
+    class IndexingStatus(models.TextChoices):
+        WAITING = 'WAITING', 'waiting'
+        INDEXING = 'INDEXING', 'indexing'
+        SUCCESS = 'SUCCESS', 'success'
+        PARTIAL = 'PARTIAL', 'partial'
+        FAILED = 'FAILED', 'failed'
+
     document = models.OneToOneField(
         Document,
         on_delete=models.CASCADE,
         related_name='processing_result')
 
-    parsing_status = models.CharField(max_length=50, blank=True, null=True)
-    indexing_status = models.CharField(max_length=50, blank=True, null=True)
+    parsing_status = models.CharField(
+        max_length=50,
+        choices=ParsingStatus.choices,
+        default=ParsingStatus.PENDING
+    )
+    indexing_status = models.CharField(
+        max_length=50,
+        choices=IndexingStatus.choices,
+        default=IndexingStatus.WAITING
+    )
 
     row_count = models.IntegerField(blank=True, null=True)
     column_count = models.IntegerField(blank=True, null=True)
@@ -63,3 +95,9 @@ class DocumentProcessingResult(models.Model):
     summary = models.TextField(blank=True, null=True)
     processed_at = models.DateTimeField(blank=True, null=True)
     error_message = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return f"results: {self.row_count} rows, {self.column_count} columns"
+
+    class Meta:
+        ordering = ['-processed_at', 'row_count', 'column_count']

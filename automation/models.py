@@ -18,7 +18,8 @@ class AutomationJob(models.Model):
     job_type = models.CharField(
         max_length=30,
         choices=AutomationTasks.choices,
-        default=AutomationTasks.MAINTENANCE_TASK)
+        default=AutomationTasks.MAINTENANCE_TASK
+    )
 
     target_document = models.ForeignKey(
         Document,
@@ -34,20 +35,42 @@ class AutomationJob(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return f"job type: {self.job_type}, target document: {self.target_document}"
+
 
 class AutomationRun(models.Model):
+    class Status(models.TextChoices):
+        PENDING = 'PENDING', 'Pending'
+        RUNNING = 'RUNNING', 'Running'
+        SUCCESS = 'SUCCESS', 'Success'
+        FAILED = 'FAILED', 'Failed'
+        TIMEOUT = 'TIMEOUT', 'Timeout'
+        CANCELLED = 'CANCELLED', 'Cancelled'
+
     job = models.ForeignKey(
         AutomationJob,
         on_delete=models.CASCADE,
         related_name='runs'
     )
-    status = models.CharField(max_length=50, blank=True, null=True)
+    status = models.CharField(
+        max_length=50,
+        choices=Status.choices,
+        default=Status.PENDING,
+        db_index=True
+    )
 
     started_at = models.DateTimeField(auto_now_add=True)
     finished_at = models.DateTimeField(blank=True, null=True)
 
     result_summary = models.TextField(blank=True, null=True)
     error_message = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return f"status: {self.status if self.status else ''}"
+
+    class Meta:
+        ordering = ['-started_at', '-finished_at', 'job__name']
 
 
 class SystemLog(models.Model):
@@ -60,10 +83,17 @@ class SystemLog(models.Model):
     level = models.CharField(
         max_length=30,
         choices=TextLevels.choices,
-        default=TextLevels.INFO
+        default=TextLevels.INFO,
+        db_index=True
     )
     source = models.CharField(max_length=100)
     message = models.TextField()
 
     context_json = models.JSONField(default=dict, blank=True, null=True)
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
+
+    def __str__(self):
+        return f"level: {self.level}, source: {self.source}"
+
+    class Meta:
+        ordering = ['-created_at', 'source']
