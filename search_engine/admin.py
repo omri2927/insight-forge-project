@@ -1,9 +1,12 @@
+"""Admin configuration for search history and cached search results."""
+
 from django.contrib import admin
 from .models import SearchQuery, SearchResultCache
 
-# Register your models here.
+
 @admin.register(SearchQuery)
 class SearchQueryAdmin(admin.ModelAdmin):
+    # Show who searched, what they searched for, and when.
     list_display = ('get_user', 'query_text', 'results_count', 'executed_at')
     list_filter = ('executed_at',)
     search_fields = ('user__username', 'query_text')
@@ -13,8 +16,10 @@ class SearchQueryAdmin(admin.ModelAdmin):
         return obj.user.username
     get_user.short_description = 'User'
 
+
 @admin.register(SearchResultCache)
 class SearchResultCacheAdmin(admin.ModelAdmin):
+    # Show which cached result belongs to which query and document.
     list_display = ('get_search_query', 'get_document', 'snippet', 'score', 'matched_count', 'cached_at')
     list_filter = ('cached_at',)
     readonly_fields = ('snippet', 'score', 'matched_count', 'cached_at')

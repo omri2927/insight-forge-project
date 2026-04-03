@@ -1,0 +1,6 @@
+﻿title,original_file_name,owner,upload_status,file_size_kb,is_active
+Project Alpha,alpha_v1.pdf,admin,SUCCESS,1540,True
+Financial Report,q4_2023.xlsx,johndoe,PENDING,2450,True
+System Log,error_log_01.txt,system,FAILED,12,False
+User Manual,manual_he.pdf,admin,SUCCESS,890,True
+Research Data,raw_data.csv,analyst_1,SUCCESS,5600,True
