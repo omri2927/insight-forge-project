@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}InsightForge{% endblock %}
+
+{% block content %}
+    <h1 style="font-size: 3rem; color: #2c3e50;">{{ title }}</h1>
+     <p style="font-size: 1.2rem; color: #7f8c8d;">
+         An advanced system for document management, data analysis and intelligent automation.
+     </p>
+
+    <hr style="width: 50%; margin: 30px auto;">
+
+     <!-- Placeholder ל-Dashboard -->
+    <div class="dashboard-placeholder" style="background: #f9f9f9; padding: 20px; border-radius: 8px; border: 1px dashed #bdc3c7;">
+        <h2>{{ status }}</h2>
+        <h3>Control Panel (soon...)</h3>
+        <p>
+            Here you will be able to see statistics on your documents,
+            Analytics graphs and the status of automation runs in the future.
+        </p>
+
+        {% if user.is_authenticated %}
+            <p>Hello <strong>{{ user.username }}</strong>, You are already connected!</p>
+            <a href="/admin/" style="background: #3498db; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">
+                Enter the Management Interface
+            </a>
+        {% else %}
+            <p>To start using the system, you need to connect first.</p>
+            <a href="/admin/login/" style="background: #2ecc71; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">
+                Connect to the System
+            </a>
+        {% endif %}
+    </div>
+{% endblock %}
