@@ -1,8 +1,10 @@
 from django.db import models
+from django.utils import timezone
 from django.contrib.auth.models import User
 
 def document_upload_path(instance, filename):
-    return f'documents/user_{instance.owner.id}/{instance.uploaded_at:%Y/%m}/{filename}'
+    upload_date = instance.uploaded_at or timezone.now()
+    return f'documents/user_{instance.owner.id}/{upload_date:%Y/%m}/{filename}'
 
 class DocumentType(models.Model):
     name = models.CharField(max_length=50, unique=True)
