@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+    <h1>{{ title }}</h1>
+
+    <div class="stats">
+        <p>You uploaded <strong>{{ documents }}</strong> documents</p>
+        <p>You have <strong>{{ searches }}</strong> searches</p>
+        <p>Jobs: {{ jobs }} | Logs: {{ logs }}</p>
+    </div>
+
+    <h3>Recent Documents</h3>
+    <ul>
+        {% for doc in recent_documents %}
+            <li>{{ doc.title }} - <small>{{ doc.document_type.name|default:"General" }}</small></li>
+        {% empty %}
+            <li>No documents yet.</li>
+        {% endfor %}
+    </ul>
+    {% if docs %}
+        <a href="#">View all documents →</a>
+    {% endif %}
+
+{% endblock %}

@@ -4,9 +4,9 @@
 
 {% block content %}
     <h1 style="font-size: 3rem; color: #2c3e50;">{{ title }}</h1>
-     <p style="font-size: 1.2rem; color: #7f8c8d;">
+    <p style="font-size: 1.2rem; color: #7f8c8d;">
          An advanced system for document management, data analysis and intelligent automation.
-     </p>
+    </p>
 
     <hr style="width: 50%; margin: 30px auto;">
 
@@ -21,6 +21,10 @@
 
         {% if user.is_authenticated %}
             <p>Hello <strong>{{ user.username }}</strong>, You are already connected!</p>
+
+            <a href="{% url 'dashboard' %}" style="background: #e67e22; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; margin-right: 10px;">
+                Go to Dashboard
+            </a>
             <a href="/admin/" style="background: #3498db; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">
                 Enter the Management Interface
             </a>
