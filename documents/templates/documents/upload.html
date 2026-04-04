@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}Upload File and Create Document{% endblock %}
+
+{% block content %}
+    <div class="card shadow-sm p-4 rounded-4" style="max-width: 500px; margin: auto;">
+        <h3 class="text-center mb-4 text-primary">Upload new File</h3>
+        <form method="post" enctype="multipart/form-data" action="{% url 'upload_document' %}">
+            {% csrf_token %}
+            {% for field in form %}
+            <div class="mb-3 text-start">
+                <label class="form-label fw-bold">{{ field.label }}</label>
+                {{ field }}
+                {% if field.help_text %}
+                    <small class="text-muted d-block mt-1">{{ field.help_text }}</small>
+                {% endif %}
+            </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-primary w-100 rounded-pill py-2 shadow-sm">
+                Upload Now
+            </button>
+        </form>
+    </div>
+{% endblock %}

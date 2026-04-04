@@ -1,4 +1,4 @@
-"""Admin configuration for the accounts app."""
+"""Admin configuration for the accounts' app."""
 
 from django.contrib import admin
 from .models import UserProfile

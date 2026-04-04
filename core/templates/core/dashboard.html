@@ -19,8 +19,7 @@
             <li>No documents yet.</li>
         {% endfor %}
     </ul>
-    {% if docs %}
-        <a href="#">View all documents →</a>
-    {% endif %}
+    <a href="{% url 'upload_document' %}">Upload new documents</a>
+    <br>
 
 {% endblock %}

@@ -62,7 +62,7 @@ class Document(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"document type: ({self.document_type}), title: {self.title if self.title else ''}"
+        return f"{self.title if self.title else ''} - ext: {self.document_type}"
 
     class Meta:
         ordering = ['-uploaded_at', '-updated_at', 'file_size']

@@ -96,3 +96,7 @@ USE_TZ = True
 
 # Static file URL prefix.
 STATIC_URL = 'static/'
+
+MEDIA_URL = '/media/'
+
+MEDIA_ROOT = BASE_DIR / 'media'
