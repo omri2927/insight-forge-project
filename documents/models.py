@@ -110,7 +110,7 @@ class DocumentProcessingResult(models.Model):
     detected_language = models.CharField(max_length=30, blank=True, null=True)
 
     summary = models.TextField(blank=True, null=True)
-    processed_at = models.DateTimeField(blank=True, null=True)
+    processed_at = models.DateTimeField(auto_now_add=True)
     error_message = models.TextField(blank=True, null=True)
 
     def __str__(self):

@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .forms import DocumentUploadForm
+from .services import DocumentParser
 
 # Create your views here.
 @login_required
@@ -15,6 +16,8 @@ def upload_document_view(request):
             document.original_file_name = uploaded_file.name
             document.file_size = uploaded_file.size
             document.save()
+
+            DocumentParser.parse_document(document)
             return redirect('upload_document')
     else:
         form = DocumentUploadForm()
