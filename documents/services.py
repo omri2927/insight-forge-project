@@ -96,7 +96,6 @@ class DocumentParser:
                     res.row_count = 1
                     res.column_count = 1
 
-
                 res.parsing_status = DocumentProcessingResult.ParsingStatus.SUCCESS
                 res.error_message = None
         except Exception as e:

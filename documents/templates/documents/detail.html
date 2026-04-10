@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}Document {{ document.title }} Parsing Process Results{% endblock %}
+
+{% block content %}
+    <style>
+        .result-container { padding: 20px; border: 1px solid #eee; border-radius: 5px; }
+        .error-msg { color: #d9534f; font-weight: bold; }
+        .success-msg { color: #5cb85c; }
+        .meta-info { color: #666; margin-bottom: 10px; display: block; }
+    </style>
+
+    <div class="result-container">
+        <h3>Parsing Results for: <strong>{{ document.title }}</strong></h3>
+        {% if process_result %}
+            <span class="meta-info">
+                 <strong>Stats:</strong> {{ process_result.row_count }} Rows, {{ process_result.column_count }} Columns |
+                 <strong>Encoding:</strong> {{ process_result.detected_encoding }} |
+                 <strong>Parsing Status:</strong> {{ process_result.parsing_status }} |
+                 <strong>Indexing Status:</strong> {{ process_result.indexing_status }}
+            </span>
+
+            <div class="status-text">
+                <strong>Status Info:</strong>
+                {% if process_result.error_message %}
+                    <span class="error-msg">{{ process_result.error_message }}</span>
+                {% elif process_result.summary %}
+                    <span class="success-msg">{{ process_result.summary }}</span>
+                {% else %}
+                    <span>No additional information available.</span>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
